@@ -12,6 +12,7 @@
     "@squirrel-labs/peanut-sdk": "^0.3.4",
     "@web3modal/wagmi": "^3.2.0",
     "compiled.css": "link:@web3inbox/widget-react/dist/compiled.css",
+    "ethers": "^5.7.2",
     "next": "14.0.1",
     "react": "link:@web3modal/wagmi/react",
     "react-dom": "^18",
