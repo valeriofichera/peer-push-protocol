@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@squirrel-labs/peanut-sdk": "^0.3.4",
     "@web3modal/wagmi": "^3.2.0",
     "compiled.css": "link:@web3inbox/widget-react/dist/compiled.css",
     "next": "14.0.1",
