@@ -1,20 +1,15 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const dotenv_1 = __importDefault(require("dotenv"));
-const viem_1 = require("viem");
-const chains_1 = require("viem/chains");
-dotenv_1.default.config();
+import dotenv from 'dotenv';
+import { createPublicClient, http, webSocket } from 'viem';
+import { arbitrum } from 'viem/chains';
+dotenv.config();
 const RPC_PROVIDER_API_KEY = process.env.RPC_PROVIDER_API_KEY || '';
-const webSocketClient = (0, viem_1.createPublicClient)({
-    chain: chains_1.arbitrum,
-    transport: (0, viem_1.webSocket)(`wss://arb-mainnet.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
+const webSocketClient = createPublicClient({
+    chain: arbitrum,
+    transport: webSocket(`wss://arb-mainnet.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
 });
-const publicClient = (0, viem_1.createPublicClient)({
-    chain: chains_1.arbitrum,
-    transport: (0, viem_1.http)(`https://arb-mainnet.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
+const publicClient = createPublicClient({
+    chain: arbitrum,
+    transport: http(`https://arb-mainnet.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
 });
 // Helper function to sanitize twitter handle
 const sanitizeHandle = (twitterHandleInput) => {
