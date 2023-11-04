@@ -19,7 +19,7 @@ export default function App() {
         // The project ID and domain you setup in the Domain Setup section
         projectId,
         domain: 'peer-push-protocol.vercel.app',
-        
+
         // Allow localhost development with "unlimited" mode.
         // This authorizes this dapp to control notification subscriptions for all domains (including `app.example.com`), not just `window.location.host`
         isLimited: false
@@ -46,7 +46,7 @@ export default function App() {
     useEffect(() => {
         // Register even if an identity key exists, to account for stale keys
         performRegistration()
-    }, [performRegistration])
+    }, [])
 
     const { isSubscribed, isSubscribing, subscribe } = useManageSubscription()
 
@@ -54,7 +54,7 @@ export default function App() {
         // Register again just in case
         await performRegistration()
         await subscribe()
-    }, [subscribe, isRegistered])
+    }, [subscribe, isRegistered, performRegistration])
 
     const { subscription } = useSubscription()
     const { messages } = useMessages()
