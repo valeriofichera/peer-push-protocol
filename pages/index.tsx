@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import peanut from '@squirrel-labs/peanut-sdk';
-
+import Feed from '../components/Feed';
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -16,6 +16,7 @@ export default function Home() {
       </div>
       
       <a href='/test'> test</a>
+      <Feed />
     </main>
   )
 }
