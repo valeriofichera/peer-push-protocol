@@ -15,7 +15,7 @@ function Header() {
       </div>
 
       <div className="flex flex-row gap-10 justify-center">
-        <Link href="/Dashboard" className="flex flex-row gap-3 items-center bg-slate-200 rounded-lg p-1">
+        <Link href="/Dashboard" className=" flex flex-row gap-3 items-center bg-slate-200 rounded-lg p-1">
           <Dashboard_icon className="h-[100px]" />
           Dashboard
         </Link>

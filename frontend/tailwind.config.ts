@@ -55,6 +55,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
+        nebula: ["var(--font-nebula)"],
       },
       keyframes: {
         "accordion-down": {
