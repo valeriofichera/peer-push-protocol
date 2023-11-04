@@ -1,4 +1,4 @@
-import { INotification } from "./types";
+import { INotification } from "@/lib/types";
 
 export const sendNotification = async (notificationPayload: {
   accounts: string[];

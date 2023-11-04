@@ -1,5 +1,5 @@
 import React from "react";
-import { PPP } from "./icon";
+import { PPP } from "@/components/Icons";
 
 function Header() {
   return (

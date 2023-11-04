@@ -1,7 +1,7 @@
 import '@/styles/globals.css';
 import type { AppProps } from "next/app";
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
-import Header from '../components/Header'
+import Header from '@/components/Header';
 import { WagmiConfig } from 'wagmi'
 import { arbitrum, mainnet, goerli } from 'wagmi/chains'
 

@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { useEthersSigner } from '@/lib/hooks/useEthersSigner';
-import peanut, { createLink } from '@squirrel-labs/peanut-sdk';
-import { ethers } from "ethers";
+import peanut from '@squirrel-labs/peanut-sdk';
 import Link from 'next/link';
 
 

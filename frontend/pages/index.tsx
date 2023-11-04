@@ -1,7 +1,6 @@
-import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import peanut from '@squirrel-labs/peanut-sdk';
-import Feed from '../components/Feed';
+import Feed from '@/components/Feed';
 import Link from 'next/link';
 
 
