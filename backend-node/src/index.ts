@@ -1,3 +1,4 @@
+import axios from 'axios';
 import dotenv from 'dotenv';
 import {
   GetFilterLogsReturnType,
@@ -10,37 +11,65 @@ import {
   http,
   webSocket
 } from 'viem';
-import { arbitrum } from 'viem/chains';
+
+import { polygon } from 'viem/chains';
 
 dotenv.config();
 
-const RPC_PROVIDER_API_KEY = process.env.RPC_PROVIDER_API_KEY || '';
+const RPC_PROVIDER_API_KEY = process.env.RPC_PROVIDER_API_KEY;
+const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY;
+
+if (!RPC_PROVIDER_API_KEY || !POLYGONSCAN_API_KEY) {
+  throw new Error("Missing API_KEY in .env");
+}
 
 const webSocketClient = createPublicClient({
-  chain: arbitrum,
-  transport: webSocket(`wss://arb-mainnet.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
+  chain: polygon,
+  transport: webSocket(`wss://polygon-mainnet.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
 });
 
 const publicClient = createPublicClient({
-  chain: arbitrum,
-  transport: http(`https://arb-mainnet.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
+  chain: polygon,
+  transport: http(`https://polygon-mainnet.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
 });
 
-type ExpectedLogArgs = {
-  solver: `0x${string}`;
-  challenge: `0x${string}`;
-  twitterHandle: string;
+const contractAddress = "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619";
+
+// fetch the contract's ABI from the explorer
+async function getContractAbi(_contractAddress: string) {
+  const explorerResponse = await axios.get("https://api.polygonscan.com/api", {
+    params: {
+      module: "contract",
+      action: "getabi",
+      address: _contractAddress,
+      apikey: POLYGONSCAN_API_KEY
+    }
+  });
+
+  const abi = JSON.parse(explorerResponse?.data?.result);
+  return abi;
 }
 
-type ExpectedLog = {
-  args: ExpectedLogArgs;
-  eventName: string;
-  transactionHash: `0x${string}`;
-} & Log
+// listen for any new events on the contract
+//usdc address
+const contractAbi = await getContractAbi(contractAddress);
+
+console.log("contract address", contractAddress);
+console.log("contract abi", contractAbi);
 
 
-// Function to handle ChallengeSolved event
-const handleEventTriggered = async (twitterHandleInput: string, challenge: `0x${string}`, transactionHash: `0x${string}`) => {
-}
+webSocketClient.watchContractEvent({
+  address: contractAddress,
+  abi: contractAbi,
+  eventName: "Transfer",
+  onError: (error) => {
+    throw error;
+  },
+  onLogs: (logs) => {
+    console.log("new logs", logs);
+  },
+});
 
-console.log("Listening for ChallengeSolved events...");
+console.log("listening for events on contract", contractAddress);
+
+
