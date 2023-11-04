@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { useEthersSigner } from '@/utils/useEthersSigner';
 import peanut, { createLink } from '@squirrel-labs/peanut-sdk';
 import { ethers } from "ethers";
@@ -39,9 +40,9 @@ export default function Peanut() {
         hello
         </div>
 
-        <button onClick={()=>createLink()}>
+        <Button  onClick={()=>createLink()}>
             Create Link
-        </button>
+        </Button>
 
         
         <a href='/test'> test</a>
