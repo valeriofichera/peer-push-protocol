@@ -5,31 +5,29 @@ import Header from '../components/Header'
 import { WagmiConfig } from 'wagmi'
 import { arbitrum, mainnet, goerli } from 'wagmi/chains'
 
-// 1. Get projectId
-const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
+const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
+
 if (!projectId) {
-  throw new Error("You need to provide NEXT_PUBLIC_PROJECT_ID env variable");
+  throw new Error("NEXT_PUBLIC_PROJECT_ID env variable missing");
 }
 
-// 2. Create wagmiConfig
 const metadata = {
-  name: 'Web3Modal',
-  description: 'Web3Modal Example',
-  url: 'https://web3modal.com',
-  icons: ['https://avatars.githubusercontent.com/u/37784886']
+  name: 'Peer Push Protocol',
+  description: 'Peer Push Protocol is an on-chain marketplace for push notifications.',
+  url: 'https://peer-push-protocol.vervel.app',
+  icons: ['/ppp.png']
 }
 
 const chains = [mainnet, arbitrum, goerli]
 const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
 
-// 3. Create modal
 createWeb3Modal({ wagmiConfig, projectId, chains })
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
-     <Header/>
-     <Component {...pageProps} />
+      <Header />
+      <Component {...pageProps} />
     </WagmiConfig>
   )
 }
