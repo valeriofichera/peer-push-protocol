@@ -1,5 +1,5 @@
 {
-  "name": "push-aggregator",
+  "name": "peer-push-protocol",
   "version": "0.1.0",
   "private": true,
   "scripts": {
