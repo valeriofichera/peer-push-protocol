@@ -54,8 +54,6 @@ async function getContractAbi(_contractAddress: string) {
 //usdc address
 const contractAbi = await getContractAbi(contractAddress);
 
-console.log("contract address", contractAddress);
-console.log("contract abi", contractAbi);
 
 
 webSocketClient.watchContractEvent({
