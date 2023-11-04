@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useW3iAccount } from '@web3inbox/widget-react';
-import { INotification } from './types';
-import { sendNotification } from './fetchNotify';
+import { INotification } from '../../utils/types';
+import { sendNotification } from '../../utils/fetchNotify';
 import toast from 'react-hot-toast';
 
 function useSendNotification() {
