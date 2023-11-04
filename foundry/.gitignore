@@ -1,8 +1,10 @@
 
 .env
 
-/lib
+/lib/
 
 /cache
 
 /out
+
+remappings.txt

@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity >=0.8.19;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 
 /*
  * PeerPushProtocol.sol
@@ -12,7 +15,12 @@ pragma solidity ^0.8.19;
  * It is designed to be used in conjunction with the Forge framework, but can
  * be used independently.
  */
-contract PeerPushProtocol {
+contract PeerPushProtocol is ERC20, ERC20Permit {
+    constructor()
+        ERC20("PeerPushProtocol", "PPP")
+        ERC20Permit("PeerPushProtocol")
+    {}
+
     struct Request {
         uint256 id;
         address sender;
