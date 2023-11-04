@@ -1,0 +1,5 @@
+{
+    "solidity.defaultCompiler": "localNodeModule",
+    "solidity.compileUsingRemoteVersion": "v0.8.21+commit.d9974bed",
+    "solidity.compileUsingLocalVersion": "/Users/markeljan/Projects/push-aggregator/soljson-v0.8.21+commit.d9974bed.js"
+}
