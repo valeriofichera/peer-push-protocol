@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import { Input } from './ui/input';
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-  } from "@/components/ui/select"
-  
-
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 interface EventOption {
   value: string;
@@ -34,7 +32,7 @@ const Feed = () => {
           <label htmlFor="text-input" className="block text-gray-700 text-sm font-bold mb-2">
             GET CONTRACT
           </label>
-          <Input 
+          <Input
             id="text-input"
             type="text"
             value={textInput}
