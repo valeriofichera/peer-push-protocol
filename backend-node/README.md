@@ -2,7 +2,7 @@
 
 **Peer Push Protocol is a decentralized marketplace for push notifications.**
 
-## This backend node.js project is an example of how to monitor events and send push notifications to the PPP network.
+## This backend node.js project is an example of how to monitor events and send push notifications to the PPP network
 
 ## Usage
 

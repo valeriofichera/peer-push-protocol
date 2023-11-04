@@ -19,7 +19,7 @@ export default function App() {
         // The project ID and domain you setup in the Domain Setup section
         projectId,
         domain: 'peer-push-protocol.vercel.app',
-
+        
         // Allow localhost development with "unlimited" mode.
         // This authorizes this dapp to control notification subscriptions for all domains (including `app.example.com`), not just `window.location.host`
         isLimited: false
