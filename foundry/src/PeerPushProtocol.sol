@@ -7,14 +7,18 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 /*
  * PeerPushProtocol.sol
  * Peer Push Protocol (PPP) is a protocol for incentivizing the pushing of data
- * into an aggregator contract which can then be used as a notification system
- * for on or pff-chain push notificaitons.
+ * into an aggregator contract which can then be easily used on or off-chain.
  */
 contract PeerPushProtocol is ERC20, ERC20Permit {
+    uint256 public constant INITIAL_SUPPLY = 10000000000 ether;
+
     constructor()
         ERC20("PeerPushProtocol", "PPP")
         ERC20Permit("PeerPushProtocol")
-    {}
+    {
+        // Mint the total supply to the contract itself
+        _mint(address(this), INITIAL_SUPPLY);
+    }
 
     mapping(address => bool) public hasClaimedTokens;
     mapping(address => uint256) public addressToDepositedTokens;
@@ -38,7 +42,7 @@ contract PeerPushProtocol is ERC20, ERC20Permit {
     function claimTokens() public {
         require(!hasClaimedTokens[msg.sender], "already claimed tokens");
 
-        uint256 claimAmount = 10000 ether; // Set the claim amount per user
+        uint256 claimAmount = 10000 ether;
         require(
             balanceOf(address(this)) >= claimAmount,
             "Insufficient contract balance"
