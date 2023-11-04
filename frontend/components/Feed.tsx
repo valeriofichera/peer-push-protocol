@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Button } from './ui/button';
 
 interface EventOption {
   value: string;
@@ -25,41 +26,62 @@ const Feed = () => {
   const [selectedEvent, setSelectedEvent] = useState<string>('');
 
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl text-center font-semibold mb-4">PICK A FEED</h2>
-      <div className="grid grid-cols-1 gap-4">
-        <div>
-          <label htmlFor="text-input" className="block text-gray-700 text-sm font-bold mb-2">
-            GET CONTRACT
-          </label>
-          <Input
-            id="text-input"
-            type="text"
-            value={textInput}
-            onChange={(e) => setTextInput(e.target.value)}
-            placeholder="Contract Address"
-          />
-        </div>
-        <div>
-          <label htmlFor="select-event" className="block text-gray-700 text-sm font-bold mb-2">
-            EVENTS
-          </label>
-          <Select>
-            <SelectTrigger className="w-full px-4 py-2 bg-white border border-gray-400 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-              <SelectValue placeholder="Select event" />
-            </SelectTrigger>
-            <SelectContent>
-              {/* Use SelectItem for each event you have */}
-              <SelectItem value="event1">Event 1</SelectItem>
-              <SelectItem value="event2">Event 2</SelectItem>
-              <SelectItem value="event3">Event 3</SelectItem>
-              {/* ... other items */}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-    </div>
+    <>
+    
+
+<div className="grid grid-cols-5 gap-4 p-4 bg-pink-100">
+{/* This spans all 5 columns */}
+<h2 className="col-span-5 text-center text-4xl font-bold uppercase text-black">
+  Create a feed
+</h2>
+
+{/* Label spans 2 columns, input spans 3 */}
+<div className="col-span-2 flex justify-end items-center">
+  <label htmlFor="contract" className="font-semibold text-black">
+    Get Contract
+  </label>
+</div>
+<div className="col-span-3">
+  <input
+    id="contract"
+    type="text"
+    placeholder="input Contract Address"
+    className="w-full py-2 px-4 rounded shadow-lg text-gray-700 focus:outline-none"
+  />
+</div>
+
+{/* Label spans 2 columns, select dropdown spans 3 */}
+<div className="col-span-2 flex justify-end items-center">
+  <label htmlFor="events" className="font-semibold text-black">
+    Events
+  </label>
+</div>
+<div className="col-span-3 relative">
+  <select
+    id="events"
+    className="w-full py-2 px-4 rounded shadow-lg text-gray-700 focus:outline-none appearance-none bg-white"
+  >
+    <option value="getFunction">getFunction</option>
+    {/* Add more options as necessary */}
+  </select>
+  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+      <path d="M5.516 7.548c.436-.446 1.043-.481 1.576 0 .925.836 2.313.808 3.223 0a1.147 1.147 0 011.576 0c.436.446.408 1.197 0 1.615C10.313 10.96 8.689 11 7.315 9.163c-.408-.418-.436-1.17 0-1.615z" />
+    </svg>
+  </div>
+</div>
+
+{/* Button spans all 5 columns */}
+<Button >
+  Register Request
+</Button>
+</div>
+</>
+
   );
 };
 
 export default Feed;
+
+
+

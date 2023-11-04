@@ -8,11 +8,11 @@ import Link from "next/link";
 
 function Header() {
   return (
-    <div className="min-w-screen flex items-center px-10 mt-5">
+    <div className="min-w-screen flex items-center mt-5">
 
-      <div className="flex items-center justify-start flex-grow">
+      <Link href="/" className="flex items-center justify-start flex-grow">
         <PPP className="h-[100px]" />
-      </div>
+      </Link>
 
       <div className="flex flex-row gap-10 justify-center">
         <Link href="/Dashboard" className=" flex flex-row gap-3 items-center bg-slate-200 rounded-lg p-1">
