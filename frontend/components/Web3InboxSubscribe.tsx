@@ -39,14 +39,10 @@ export default function App() {
         try {
             await register(message => signMessageAsync({ message }))
         } catch (registerIdentityError) {
+
             alert(registerIdentityError)
         }
     }, [signMessageAsync, register, address])
-
-    useEffect(() => {
-        // Register even if an identity key exists, to account for stale keys
-        performRegistration()
-    }, [])
 
     const { isSubscribed, isSubscribing, subscribe } = useManageSubscription()
 
@@ -54,7 +50,7 @@ export default function App() {
         // Register again just in case
         await performRegistration()
         await subscribe()
-    }, [subscribe, isRegistered, performRegistration])
+    }, [subscribe, performRegistration])
 
     const { subscription } = useSubscription()
     const { messages } = useMessages()
