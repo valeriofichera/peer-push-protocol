@@ -8,22 +8,22 @@ import Link from "next/link";
 
 function Header() {
   return (
-    <div className="min-w-screen flex items-center mt-5">
+    <div className="min-w-screen flex items-center mt-5 font-nebula font-bold">
 
       <Link href="/" className="flex items-center justify-start flex-grow">
         <PPP className="h-[100px]" />
       </Link>
 
       <div className="flex flex-row gap-10 justify-center">
-        <Link href="/Dashboard" className=" flex flex-row gap-3 items-center bg-slate-200 rounded-lg p-1">
+        <Link href="/Dashboard" className=" flex flex-row gap-3 items-center bg-slate-200 rounded-xl p-3 hover:shadow-xl hover:shadow-slate-400">
           <Dashboard_icon className="h-[100px]" />
           Dashboard
         </Link>
-        <Link href="/Notifications" className="flex flex-row gap-3 items-center bg-slate-200 rounded-lg p-1">
+        <Link href="/Notifications" className="flex flex-row gap-3 items-center bg-slate-200 rounded-xl p-3 hover:shadow-xl hover:shadow-slate-400">
           <Notfication_icon className="h-[100px]" />
           My Notfications
         </Link>
-        <Link href="/Marketplace" className="flex flex-row gap-3 items-center bg-slate-200 rounded-lg p-1">
+        <Link href="/Marketplace" className="flex flex-row gap-3 items-center bg-slate-200 rounded-xl p-3 hover:shadow-xl hover:shadow-slate-400">
           <MarketPlace_Icon className="h-[100px]" />
           Marketplace
         </Link>

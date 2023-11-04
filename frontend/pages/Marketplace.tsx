@@ -1,11 +1,11 @@
 import Image from 'next/image'
-import { Inter } from 'next/font/google'
+import { Oxanium } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+const oxanium = Oxanium({ subsets: ['latin'] })
 
 export default function Marketplace() {
   return (
-<div className='w-screen'>
+<div className='w-screen font-{`oxanium`}'>
 
 
 

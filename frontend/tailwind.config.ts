@@ -54,8 +54,9 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
-        nebula: ["var(--font-nebula)"],
+        sans: ["var(--font-sans)", 'sans-serif'],
+        nebula: ['nebula', 'sans-serif'],
+        oxanium: ["var(--font-sans)", ...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {

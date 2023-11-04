@@ -2,17 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-
- 
 @layer base {
 
   @font-face {
-    font-family: 'Nebula';
-    src: url('../components/fonts/Nebula.woff2') format('woff2');
-    font-weight: 400;
-    font-display: swap;
+    font-family: 'nebula';
+    src: url('/fonts/Nebula-Regular.otf') format('opentype');
+    font-weight: normal;
     font-style: normal;
-    variable: '--font-nebula';
   }
 
   :root {

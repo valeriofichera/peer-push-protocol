@@ -1,4 +1,4 @@
-import Feed from '@/components/Feed';
+import Feed from '@/components/CreateFeed';
 import Web3InboxSubscribe from '@/components/Web3InboxSubscribe';
 
 
