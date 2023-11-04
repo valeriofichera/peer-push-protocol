@@ -4,5 +4,9 @@ backend/.env
 founder/.env
 
 backend-node/node_modules/
-frontend/node_modules/
+
 foundry/lib/
+foundry/cache/
+foundry/out/
+
+frontend/node_modules/
