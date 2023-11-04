@@ -2,7 +2,7 @@ import type { AppProps } from "next/app";
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
 import Header from '../components/Header'
 import { WagmiConfig } from 'wagmi'
-import { arbitrum, mainnet } from 'wagmi/chains'
+import { arbitrum, mainnet, goerli } from 'wagmi/chains'
 
 // 1. Get projectId
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
@@ -18,7 +18,7 @@ const metadata = {
   icons: ['https://avatars.githubusercontent.com/u/37784886']
 }
 
-const chains = [mainnet, arbitrum]
+const chains = [mainnet, arbitrum, goerli]
 const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
 
 // 3. Create modal
