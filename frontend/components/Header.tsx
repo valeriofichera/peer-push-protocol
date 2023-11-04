@@ -1,12 +1,9 @@
 import React from "react";
-<<<<<<< Updated upstream
-import { PPP } from "@/components/Icons";
-=======
+
 import { PPP } from "./icons/PPP_logo";
 import { Notfication_icon } from "./icons/Notification_icon";
 import { Dashboard_icon } from "./icons/Dashboard_icon";
 import { MarketPlace_Icon } from "./icons/MarketPlace_Icon";
->>>>>>> Stashed changes
 
 function Header() {
   return (
