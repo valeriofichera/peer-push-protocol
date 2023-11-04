@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/frontend/components/ui/button';
 import { useEthersSigner } from '@/utils/useEthersSigner';
 import peanut, { createLink } from '@squirrel-labs/peanut-sdk';
 import { ethers } from "ethers";
