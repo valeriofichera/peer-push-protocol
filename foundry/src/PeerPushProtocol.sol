@@ -13,7 +13,6 @@ pragma solidity ^0.8.19;
  * be used independently.
  */
 contract PeerPushProtocol {
-    
     struct Request {
         uint256 id;
         address sender;
@@ -57,6 +56,22 @@ contract PeerPushProtocol {
         requests.push(request);
     }
 
+    /* disable a request
+     * @param _requestId the id of the request to cancel
+     */
+    function disableRequest(uint256 _requestId) public {
+        Request storage request = requests[_requestId];
+
+        // check that the request is active
+        require(request.active, "request is inactive");
+
+        // check that the sender is the owner of the request
+        require(request.sender == msg.sender, "sender is not the owner");
+
+        // disable the request
+        request.active = false;
+    }
+
     /* refresh the state of a request
      * @param _requestId the id of the request to refresh
      */
@@ -85,6 +100,23 @@ contract PeerPushProtocol {
         //TODO: implement
         // send the reward to the sender
         // payable(request.sender).transfer(request.pushReward);
+    }
+
+    /* get the current state of a request
+     * @param _requestId the id of the request to get the state of
+     */
+    function getRequestState(
+        uint256 _requestId
+    ) public view returns (bytes memory) {
+        Request storage request = requests[_requestId];
+
+        return request.currentState;
+    }
+
+    /* get all requests
+     */
+    function getRequests() public view returns (Request[] memory) {
+        return requests;
     }
 
     /* read the current state of a function on another contract
