@@ -1,24 +1,16 @@
-import { Inter } from 'next/font/google'
-import peanut from '@squirrel-labs/peanut-sdk';
 import Feed from '@/components/Feed';
-import Link from 'next/link';
+import Web3InboxSubscribe from '@/components/Web3InboxSubscribe';
 
-
-const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   return (
     <main
-      className='h-screen'
+      className='max-w-2xl mx-auto px-4 sm:px-6 lg:px-8'
     >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        hell
-      </div>
-
-      <Link href='/test'>
+      <div className='flex flex-col items-center justify-center py-12 bg-red-200'>
         <Feed />
-      </Link>
+        <Web3InboxSubscribe />
+      </div>
     </main>
   )
 }
-console.log('Peanut version: ', peanut.version)
