@@ -1,4 +1,5 @@
 import Feed from '@/components/Feed';
+import { SendNotificationButton } from '@/components/SendNotificationButton';
 import Web3InboxSubscribe from '@/components/Web3InboxSubscribe';
 
 
@@ -10,6 +11,7 @@ export default function Home() {
       <div className='flex flex-col items-center justify-center py-12 bg-red-200'>
         <Feed />
         <Web3InboxSubscribe />
+        <SendNotificationButton />
       </div>
     </main>
   )
