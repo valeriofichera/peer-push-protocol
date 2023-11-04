@@ -1,7 +1,9 @@
+import '@/styles/globals.css'
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
 import Header from '../components/Header'
 import { WagmiConfig } from 'wagmi'
 import { arbitrum, mainnet } from 'wagmi/chains'
+import { AppProps } from 'next/app'
 
 // 1. Get projectId
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
@@ -23,10 +25,11 @@ const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
 // 3. Create modal
 createWeb3Modal({ wagmiConfig, projectId, chains })
 
-export default function App() {
+export default function App({ Component, pageProps}: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
-     <Header/>
+      <Header />
+      <Component {...pageProps} />
     </WagmiConfig>
   )
 }
