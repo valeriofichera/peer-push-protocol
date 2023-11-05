@@ -43,11 +43,6 @@ export default function App() {
         }
     }, [signMessageAsync, register, address])
 
-    useEffect(() => {
-        // Register even if an identity key exists, to account for stale keys
-        performRegistration()
-    }, [])
-
     const { isSubscribed, isSubscribing, subscribe } = useManageSubscription()
 
     const performSubscribe = useCallback(async () => {
