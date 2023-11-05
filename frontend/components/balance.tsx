@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { PPP_CONTRACT_ADDRESS } from '@/lib/constants';
-import { useAccount, useBalance, useNetwork } from 'wagmi';
+import { useAccount, useBalance } from 'wagmi';
 
 const Balance = () => {
   const { address } = useAccount();
