@@ -4,7 +4,7 @@
 ## What is PPP
  Peer Push Protocol (PPP) is a decentralized marketplace for push notifications
  
-!(Website)[https://peer-push-protocol.vercel.app]
+[Website](https://peer-push-protocol.vercel.app)
 
 [Video Demo](https://www.youtube.com/watch?v=7WlNaXwKyCU)
 
