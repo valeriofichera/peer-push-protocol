@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { PPP_CONTRACT_ADDRESS } from '@/lib/constants';
-import { useBalance } from 'wagmi';
+import { useAccount, useBalance, useNetwork } from 'wagmi';
 
 const Balance = () => {
+  const { address } = useAccount();
   const { data, isLoading } = useBalance({
-    address: PPP_CONTRACT_ADDRESS,
+    address: address,
+    token: PPP_CONTRACT_ADDRESS,
   });
 
   // Use a state to hold the formatted balance to prevent content mismatch
