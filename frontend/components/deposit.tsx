@@ -1,35 +1,36 @@
 import { PPP_CONTRACT_ABI, PPP_CONTRACT_ADDRESS } from '@/lib/constants';
+import { useState } from 'react';
 import { parseUnits } from 'viem';
 import { useContractWrite } from 'wagmi'
+import { Button } from './ui/button';
+import { Input } from './ui/input';
 
 
 const Deposit = () => {
+  
+  const [amount, setAmount] = useState('');
 
   const { data, isLoading, isSuccess, write } = useContractWrite({
     address: PPP_CONTRACT_ADDRESS,
     abi: PPP_CONTRACT_ABI,
     functionName: 'depositTokens',
-    args: [parseUnits('500', 18)]
+    args: [parseUnits(amount, 18)] //uswithdraw PPP tokens
   })
 
+  const handleCreateRequest = () => {
+    write();
+  };
+
 return (
-<div className="grid grid-cols-3 gap-4 p-4 bg-slate-200 rounded-xl shadow-xl font-nebula">
-
-
-<h2 className="col-span-3 text-center text-4xl font-bold text-black">
-<p>Deposit P<sup>3</sup> Token</p>
-</h2>
-<div className='col-span-3 text-center'>
-<p>Claim 1000 P<sup>3</sup> Token to get started</p>
-</div>
-<div>
-  <button onClick={() => write()}>Deposit</button>
-  {isLoading && <div>Check Wallet</div>}
-  {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
-</div>
-
-
-
+<div className="grid grid-cols-3 gap-5 font-nebula">
+  <div className='grid col-span-1'>
+    <Input value={amount} placeholder="Amount" type='number' onChange={(e) => {setAmount(e.target.value);}} />
+  </div>
+  <div className='grid col-span-2 text-center'>
+  <Button onClick={handleCreateRequest}>
+    {isLoading ? 'Processing...' : 'Deposit'}
+  </Button>
+  </div>
 </div>
 );
 
