@@ -81,15 +81,15 @@ async function fulfilPeanutPushRequests() {
   // filter for push requests for requests tracking the Peanut contract address and function name
   const filteredPushRequests = data.filter((pushRequest) =>
     pushRequest.contractAddress === contractAddress
-    && pushRequest.functionName === 'getDepositCount')
+    && pushRequest.functionName === 'getDepositCount'
+    && pushRequest.active);
 
   // get the push request ids
   const pushRequestIds = filteredPushRequests.map((pushRequest) => pushRequest.id);
 
-  console.log(`Found ${pushRequestIds.length} push requests to fulfil`);
+  console.log(`Found ${pushRequestIds.length} eligible pushRequests.`);
 
   // loop through the push request ids and push the data to the PPP contract
-
   for (const pushRequestId of pushRequestIds) {
     const request = {
       chain: polygonMumbai,
@@ -111,13 +111,13 @@ async function fulfilPeanutPushRequests() {
     } catch (error) {
       console.log(`Error fulfilling pushRequest ${pushRequestId}: ${error.shortMessage || error}`);
     }
-
   }
 
   console.log("Finished fulfilling push requests");
 
 }
-fulfilPeanutPushRequests();
+
+await fulfilPeanutPushRequests();
 
 webSocketClient.watchContractEvent({
   address: contractAddress,
