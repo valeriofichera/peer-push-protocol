@@ -1,10 +1,12 @@
-import Image from 'next/image'
+import Balance from '@/components/balance'
+import Claim from '@/components/claim'
 
-export default function Notification() {
+export default function Notifications() {
   return (
 <div className='w-screen'>
 
-ABC
+<Claim />
+<Balance />
 
 </div>
   )

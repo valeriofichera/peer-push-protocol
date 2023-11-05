@@ -1,5 +1,5 @@
 
-import Hero_core from '@/components/Hero_core';
+import Hero_core from '@/components/HeroCore';
 import SubHero from '@/components/SubHero';
 
 
