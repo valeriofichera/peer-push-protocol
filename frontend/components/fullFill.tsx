@@ -7,7 +7,7 @@ const FullFill = () => {
   const { data, isLoading, isSuccess, write } = useContractWrite({
     address: PPP_CONTRACT_ADDRESS,
     abi: PPP_CONTRACT_ABI,
-    functionName: 'fulfillPushRequest',
+    functionName: 'fulfilPushRequest',
     args: [0] //user input, which Request to fulfill
   })
 

@@ -3,7 +3,8 @@ import Balance from '@/components/balance'
 import Claim from '@/components/claim'
 import Deposit from '@/components/deposit'
 import FullFill from '@/components/fullFill'
-import Request from '@/components/request'
+import CreateRequest from '@/components/CreateRequest'
+import Withdraw from '@/components/withdraw'
 
 export default function Notifications() {
   return (
@@ -13,8 +14,9 @@ export default function Notifications() {
 <Balance />
 <Approve  />
 <Deposit />
-<Request />
+<CreateRequest />
 <FullFill />
+<Withdraw />
 
 
 </div>
