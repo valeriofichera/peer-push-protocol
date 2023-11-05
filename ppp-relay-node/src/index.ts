@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import axios from 'axios';
 import {
+  GetFilterLogsReturnType,
   createPublicClient,
   createWalletClient,
   http,
@@ -15,8 +16,11 @@ dotenv.config();
 
 const RPC_PROVIDER_API_KEY = process.env.RPC_PROVIDER_API_KEY;
 const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY;
+const NOTIFY_API_SECRET = process.env.NOTIFY_API_SECRET;
+const PROJECT_ID = process.env.PROJECT_ID;
+const APP_DOMAIN = process.env.APP_DOMAIN;
 
-if (!RPC_PROVIDER_API_KEY || !POLYGONSCAN_API_KEY) {
+if (!RPC_PROVIDER_API_KEY || !POLYGONSCAN_API_KEY || !NOTIFY_API_SECRET || !PROJECT_ID || !APP_DOMAIN) {
   throw new Error("Missing API_KEY in .env");
 }
 
@@ -54,10 +58,6 @@ async function getContractAbi(_contractAddress: string) {
   return abi;
 }
 
-// Peanut Protocol contract address
-const contractAddress = "0xEc8f9a7f47dd6031e27Ff9cef9d0F33e81fceCe9";
-const contractAbi = await getContractAbi(contractAddress);
-
 type PushRequest = {
   id: bigint,
   creator: string,
@@ -70,55 +70,87 @@ type PushRequest = {
   active: boolean,
 };
 
-// attempt to update all pushRequests following the getDepositCount function on the Peanut contract
-async function sendWeb3InboxNotifications() {
-  const data = await publicClient.readContract({
+function parsePushRequest(returnData: PushRequest): PushRequest {
+  return {
+    id: returnData[0],
+    creator: returnData[1],
+    contractAddress: returnData[2],
+    functionName: returnData[3],
+    currentState: returnData[4],
+    pushReward: returnData[5],
+    lastUpdate: returnData[6],
+    updateInterval: returnData[7],
+    active: returnData[8],
+  };
+}
+
+// send notification to the user who's tracked state has changed
+async function sendWeb3InboxNotifications(logs) {
+  // get requestId from event logs
+  const requestId = logs[0]?.args?.requestId;
+
+  // get the pushRequest data from the PPP contract
+  const pushRequestsData = await publicClient.readContract({
     address: PPP_CONTRACT_ADDRESS,
     abi: PPP_CONTRACT_ABI,
-    functionName: 'getPushRequests',
-  }) as PushRequest[];
+    functionName: 'pushRequests',
+    args: [requestId],
+  }) as PushRequest;
 
-  // filter for push requests for requests tracking the Peanut contract address and function name
-  const filteredPushRequests = data.filter((pushRequest) =>
-    pushRequest.contractAddress === contractAddress
-    && pushRequest.functionName === 'getDepositCount')
+  const pushRequest = parsePushRequest(pushRequestsData);
 
-  // get the push request ids
-  const pushRequestIds = filteredPushRequests.map((pushRequest) => pushRequest.id);
+  // get the user's address from the pushRequest
+  const userAddressFormatted = `eip155:1:${pushRequest.creator}`;
 
-  console.log(`Found ${pushRequestIds.length} push requests to fulfil`);
+  console.log("userAddressFormatted", userAddressFormatted);
+  console.log("pushRequest.contractAddress", pushRequest.contractAddress)
 
-  // loop through the push request ids and push the data to the PPP contract
+  const contractAbi = await getContractAbi(pushRequest.contractAddress);
 
-  for (const pushRequestId of pushRequestIds) {
-    const request = {
-      chain: polygonMumbai,
-      account,
-      address: PPP_CONTRACT_ADDRESS as `0x${string}`,
-      abi: PPP_CONTRACT_ABI,
-      functionName: 'fulfilPushRequest',
-      args: [pushRequestId],
-    };
-    try {
-      const txHash = await client.writeContract(request);
+  // pushRequest.currentState is not human readable atm
+  // get the current state from the tracked contract
+  const currentState = await publicClient.readContract({
+    address: pushRequest.contractAddress as `0x${string}`,
+    abi: contractAbi,
+    functionName: pushRequest.functionName,
+    args: [],
+  });
 
-      const transactionReceipt = await publicClient.waitForTransactionReceipt(
-        { hash: txHash }
-      );
+  const currentStateFormatted = currentState.toString();
 
-      console.log(`Transaction status for pushRequest ${pushRequestId}: ${transactionReceipt.status}`);
+  console.log("currentStateFormatted", currentStateFormatted);
 
-    } catch (error) {
-      console.log(`Error fulfilling pushRequest ${pushRequestId}: ${error.shortMessage || error}`);
-    }
+  try {
+    const response = await fetch(
+      `https://notify.walletconnect.com/${PROJECT_ID}/notify`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${NOTIFY_API_SECRET}`
+        },
+        body: JSON.stringify({
+          notification: {
+            title: `${pushRequest.functionName} state changed!`,
+            body: `New state: ${currentStateFormatted}`,
+            icon: `https://${APP_DOMAIN}/ppp.png`,
+            url: `https://${APP_DOMAIN}`,
+            type: "055dee2f-3e83-4950-a705-0ef9ccaf832b", // Notification type ID from WalletConnect Cloud
+          },
+          accounts: [
+            userAddressFormatted
+          ]
+        })
+      }
+    );
 
+    console.log("Web3Inbox Push status: ", response.status);
+
+  } catch (error) {
+    console.log("error sending notification", error);
   }
 
-  console.log("Finished fulfilling push requests");
-
 }
-sendWeb3InboxNotifications();
-
 webSocketClient.watchContractEvent({
   address: PPP_CONTRACT_ADDRESS,
   abi: PPP_CONTRACT_ABI,
@@ -127,11 +159,10 @@ webSocketClient.watchContractEvent({
     throw error;
   },
   onLogs: (logs) => {
-    console.log("PushRequestFulfilled", logs);
-    sendWeb3InboxNotifications();
+    sendWeb3InboxNotifications(logs);
   },
 });
 
-console.log("listening for events on contract", contractAddress);
+console.log("listening for events on PPP contract: ", PPP_CONTRACT_ADDRESS);
 
 
