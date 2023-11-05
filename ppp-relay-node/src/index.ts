@@ -1,13 +1,7 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
 import {
-  GetFilterLogsReturnType,
-  Log,
-  TransactionReceipt,
   createPublicClient,
-  decodeEventLog,
-  encodeEventTopics,
-  fromHex,
   http,
   webSocket
 } from 'viem';
@@ -53,7 +47,6 @@ async function getContractAbi(_contractAddress: string) {
 // listen for any new events on the contract
 //usdc address
 const contractAbi = await getContractAbi(contractAddress);
-
 
 
 webSocketClient.watchContractEvent({
