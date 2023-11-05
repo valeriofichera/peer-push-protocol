@@ -1,12 +1,12 @@
-import axios from 'axios';
 import dotenv from 'dotenv';
+import axios from 'axios';
 import {
   createPublicClient,
   http,
   webSocket
 } from 'viem';
-
 import { polygon } from 'viem/chains';
+import { PPP_CONTRACT_ADDRESS, PPP_CONTRACT_ABI } from './constants.js';
 
 dotenv.config();
 
@@ -19,23 +19,21 @@ if (!RPC_PROVIDER_API_KEY || !POLYGONSCAN_API_KEY) {
 
 const webSocketClient = createPublicClient({
   chain: polygon,
-  transport: webSocket(`wss://polygon-mainnet.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
+  transport: webSocket(`wss://polygon-mumbai.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
 });
 
 const publicClient = createPublicClient({
   chain: polygon,
-  transport: http(`https://polygon-mainnet.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
+  transport: http(`https://polygon-mumbai.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
 });
-
-const contractAddress = "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619";
 
 // fetch the contract's ABI from the explorer
 async function getContractAbi(_contractAddress: string) {
-  const explorerResponse = await axios.get("https://api.polygonscan.com/api", {
+  const explorerResponse = await axios.get("https://api-mumbai.polygonscan.com/api", {
     params: {
       module: "contract",
       action: "getabi",
-      address: _contractAddress,
+      address: PPP_CONTRACT_ADDRESS,
       apikey: POLYGONSCAN_API_KEY
     }
   });
@@ -44,14 +42,10 @@ async function getContractAbi(_contractAddress: string) {
   return abi;
 }
 
-// listen for any new events on the contract
-//usdc address
-const contractAbi = await getContractAbi(contractAddress);
-
 
 webSocketClient.watchContractEvent({
-  address: contractAddress,
-  abi: contractAbi,
+  address: PPP_CONTRACT_ADDRESS,
+  abi: PPP_CONTRACT_ABI,
   eventName: "Transfer",
   onError: (error) => {
     throw error;

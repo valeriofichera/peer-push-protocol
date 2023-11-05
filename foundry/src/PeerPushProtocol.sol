@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.21;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
@@ -34,6 +34,28 @@ contract PeerPushProtocol is ERC20 {
 
     PushRequest[] public pushRequests;
 
+    event TokensClaimed(address indexed claimant, uint256 amount);
+    event TokensDeposited(address indexed depositor, uint256 amount);
+    event TokensWithdrawn(address indexed withdrawer, uint256 amount);
+    event PushRequestCreated(
+        uint256 indexed requestId,
+        address indexed creator,
+        uint256 pushReward,
+        uint256 updateInterval
+    );
+    event PushRequestFulfilled(
+        uint256 indexed requestId,
+        address indexed fulfiller
+    );
+    event PushRequestEnabled(
+        uint256 indexed requestId,
+        address indexed enabler
+    );
+    event PushRequestDisabled(
+        uint256 indexed requestId,
+        address indexed disabler
+    );
+
     /* claim tokens if you have not already */
     function claimTokens() public {
         require(!hasClaimedTokens[msg.sender], "already claimed tokens");
@@ -49,6 +71,8 @@ contract PeerPushProtocol is ERC20 {
 
         // Transfer tokens to the sender from the contract
         _transfer(address(this), msg.sender, claimAmount);
+
+        emit TokensClaimed(msg.sender, claimAmount); // Emit event when tokens are claimed
     }
 
     /* deposit PPP tokens into the contract
@@ -69,6 +93,8 @@ contract PeerPushProtocol is ERC20 {
 
         // Update the deposited balance
         addressToDepositedTokens[msg.sender] += amount;
+
+        emit TokensDeposited(msg.sender, amount); // Emit event when tokens are deposited
     }
 
     /* withdraw PPP tokens from the contract
@@ -83,6 +109,8 @@ contract PeerPushProtocol is ERC20 {
         addressToDepositedTokens[msg.sender] -= amount;
 
         _transfer(address(this), msg.sender, amount);
+
+        emit TokensWithdrawn(msg.sender, amount); // Emit event when tokens are withdrawn
     }
 
     /* create a new PushRequest
@@ -123,6 +151,13 @@ contract PeerPushProtocol is ERC20 {
 
         // add the pushRequest to the list of pushRequests for the sender
         addressToPushRequestIds[msg.sender].push(pushRequest.id);
+
+        emit PushRequestCreated(
+            pushRequest.id,
+            msg.sender,
+            _pushReward,
+            _updateInterval
+        ); // Emit event when a push request is created
     }
 
     /* disable a pushRequest
@@ -139,6 +174,8 @@ contract PeerPushProtocol is ERC20 {
 
         // disable the pushRequest
         pushRequest.active = false;
+
+        emit PushRequestDisabled(_pushRequestId, msg.sender); // Emit event when a push request is disabled
     }
 
     /* enable a pushRequest
@@ -155,6 +192,8 @@ contract PeerPushProtocol is ERC20 {
 
         // enable the pushRequest
         pushRequest.active = true;
+
+        emit PushRequestEnabled(_pushRequestId, msg.sender); // Emit event when a push request is enabled
     }
 
     /* update the state of a pushRequest
@@ -195,6 +234,8 @@ contract PeerPushProtocol is ERC20 {
 
         // add the reward to msg.sender's deposited balance
         addressToDepositedTokens[msg.sender] += pushRequest.pushReward;
+
+        emit PushRequestFulfilled(_pushRequestId, msg.sender); // Emit event when a push request is fulfilled
     }
 
     /* get the current state of a pushRequest
