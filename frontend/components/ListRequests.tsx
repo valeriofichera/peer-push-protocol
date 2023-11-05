@@ -31,8 +31,8 @@ const ListRequests = () => {
   }
 
   return (
-    <div className="grid grid-cols-p-5 bg-slate-100 rounded-xl shadow-lg font-nebula">
-      <h2 className="col-span-3 text-center text-5xl font-bold text-black">
+    <div className="grid grid-cols-6 ">
+      <h2 className="col-span-6 col-start-1 text-center text-5xl font-bold text-black font-nebula">
         My Feed
       </h2>
 
@@ -45,11 +45,11 @@ const ListRequests = () => {
           <>
           {requests && requests.map((item: any , index: any | null | undefined) => (
 
-    <div key={index} className="bg-gradient-to-r bg-gray-300 rounded-lg  p-5 flex items-center">
+    <div key={index} className="col-span-2 col-start-1 bg-gradient-to-r bg-gray-300 rounded-xl shadow-lg p-5 flex items-center">
       <div className="flex flex-row justify-center items-center">
         <div className="flex flex-col gap-5">
           <p className="text-sm font-bold">Request ID {index + 1}</p>
-          <Image src="/Peanut_Logo.svg" alt="Peanut" width={100} height={100} />
+          <Image className="pr-3" src="/Peanut_Logo.svg" alt="Peanut" width={100} height={100} />
         </div>
         <div className="flex flex-col">
           <h2 className="text-xl font-bold text-black font-nebula">

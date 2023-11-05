@@ -7,15 +7,16 @@ import Image from 'next/image'
 
 
 import Withdraw from '@/components/withdraw'
+import Deposit from '@/components/deposit'
 
 
 
 
 export default function Dashboard() {
   return (
-<div className='grid grid-rows-2'>
+<div className='grid grid-rows-4'>
   
-<div className='grid row-span-1'>
+<div className='grid row-span-3'>
 
 <div className='grid grid-cols-12 mt-12'>
 <div className='grid col-span-6'>
@@ -24,9 +25,10 @@ export default function Dashboard() {
 
 <div className='grid col-span-3 col-start-10'>
 
-  <div className=''>
+  <div className='gap-5'>
       <Balance />
       <Withdraw />
+      <Deposit />
   </div>
 
 <div>
@@ -48,8 +50,8 @@ export default function Dashboard() {
 
 <div className='grid grid-cols-12 mt-12'>
 
-<div className='grid col-span-8 col-start-3'>
-<ListRequests />
+<div className='grid col-span-5 col-start-6 mt-24 font-nebula text-xl'>
+Build with 🔥 & ❤️ @ ETHLisbon23 🇵🇹
 </div>
 </div>
 </div>

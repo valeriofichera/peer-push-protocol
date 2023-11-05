@@ -1,22 +1,11 @@
-import Approve from '@/components/approve'
-import Balance from '@/components/balance'
-import Claim from '@/components/claim'
-import Deposit from '@/components/deposit'
-import FullFill from '@/components/fullFill'
-import CreateRequest from '@/components/CreateRequest'
-import Withdraw from '@/components/withdraw'
+import ListRequests from "@/components/ListRequests";
+
 
 export default function Notifications() {
   return (
-<div className='w-screen'>
+<div className='gap-5 p-5'>
 
-<Claim />
-<Balance />
-<Approve  />
-<Deposit />
-<CreateRequest />
-<FullFill />
-<Withdraw />
+<ListRequests />
 
 
 </div>
