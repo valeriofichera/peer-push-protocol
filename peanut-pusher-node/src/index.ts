@@ -6,10 +6,11 @@ import {
   http,
   webSocket
 } from 'viem';
-import { polygonZkEvmTestnet } from 'viem/chains';
+
 import { privateKeyToAccount } from 'viem/accounts';
 
 import { PPP_CONTRACT_ADDRESS, PPP_CONTRACT_ABI } from './constants.js';
+import { polygonMumbai } from 'viem/chains';
 
 dotenv.config();
 
@@ -21,27 +22,27 @@ if (!RPC_PROVIDER_API_KEY || !POLYGONSCAN_API_KEY) {
 }
 
 const webSocketClient = createPublicClient({
-  chain: polygonZkEvmTestnet,
-  transport: webSocket(`wss://polygon-zkevm-testnet.blastapi.io/${RPC_PROVIDER_API_KEY}`)
+  chain: polygonMumbai,
+  transport: webSocket(`wss://polygon-mumbai.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
 });
 
 const publicClient = createPublicClient({
-  chain: polygonZkEvmTestnet,
-  transport: http(`https://polygon-zkevm-testnet.blastapi.io/${RPC_PROVIDER_API_KEY}`)
+  chain: polygonMumbai,
+  transport: http(`https://polygon-mumbai.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
 });
 
 const account = privateKeyToAccount(`0x${process.env.PRIVATE_KEY}`);
 
 const client = createWalletClient({
   account,
-  chain: polygonZkEvmTestnet,
-  transport: http(`https://polygon-zkevm-testnet.blastapi.io/${RPC_PROVIDER_API_KEY}`)
+  chain: polygonMumbai,
+  transport: http(`https://polygon-mumbai.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
 })
 
 
 // fetch the contract's ABI from the explorer
 async function getContractAbi(_contractAddress: string) {
-  const explorerResponse = await axios.get("https://api-testnet-zkevm.polygonscan.com/api", {
+  const explorerResponse = await axios.get("https://api-mumbai.polygonscan.com/api", {
     params: {
       module: "contract",
       action: "getabi",
@@ -55,7 +56,7 @@ async function getContractAbi(_contractAddress: string) {
 }
 
 // Peanut Protocol contract address
-const contractAddress = "0x8d1a17A3A4504aEB17515645BA8098f1D75237f7";
+const contractAddress = "0xEc8f9a7f47dd6031e27Ff9cef9d0F33e81fceCe9";
 const contractAbi = await getContractAbi(contractAddress);
 
 type PushRequest = {
@@ -92,7 +93,7 @@ async function fulfilPeanutPushRequests() {
   // loop through the push request ids and push the data to the PPP contract
   for (const pushRequestId of pushRequestIds) {
     const request = {
-      chain: polygonZkEvmTestnet,
+      chain: polygonMumbai,
       account,
       address: PPP_CONTRACT_ADDRESS as `0x${string}`,
       abi: PPP_CONTRACT_ABI,
@@ -117,7 +118,6 @@ async function fulfilPeanutPushRequests() {
 
 }
 
-await fulfilPeanutPushRequests();
 
 webSocketClient.watchContractEvent({
   address: contractAddress,

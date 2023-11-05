@@ -6,7 +6,7 @@ import {
   http,
   webSocket
 } from 'viem';
-import { polygonZkEvmTestnet } from 'viem/chains';
+import { polygonMumbai } from 'viem/chains';
 import { privateKeyToAccount } from 'viem/accounts';
 
 import { PPP_CONTRACT_ADDRESS, PPP_CONTRACT_ABI } from './constants.js';
@@ -24,27 +24,27 @@ if (!RPC_PROVIDER_API_KEY || !POLYGONSCAN_API_KEY || !NOTIFY_API_SECRET || !PROJ
 }
 
 const webSocketClient = createPublicClient({
-  chain: polygonZkEvmTestnet,
-  transport: webSocket(`wss://polygon-zkevm-testnet.blastapi.io/${RPC_PROVIDER_API_KEY}`)
+  chain: polygonMumbai,
+  transport: webSocket(`wss://polygon-mumbai.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
 });
 
 const publicClient = createPublicClient({
-  chain: polygonZkEvmTestnet,
-  transport: http(`https://polygon-zkevm-testnet.blastapi.io/${RPC_PROVIDER_API_KEY}`)
+  chain: polygonMumbai,
+  transport: http(`https://polygon-mumbai.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
 });
 
 const account = privateKeyToAccount(`0x${process.env.PRIVATE_KEY}`);
 
 const client = createWalletClient({
   account,
-  chain: polygonZkEvmTestnet,
-  transport: http(`https://polygon-zkevm-testnet.blastapi.io/${RPC_PROVIDER_API_KEY}`)
+  chain: polygonMumbai,
+  transport: http(`https://polygon-mumbai.g.alchemy.com/v2/${RPC_PROVIDER_API_KEY}`)
 })
 
 
 // fetch the contract's ABI from the explorer
 async function getContractAbi(_contractAddress: string) {
-  const explorerResponse = await axios.get("https://api-testnet-zkevm.polygonscan.com/api", {
+  const explorerResponse = await axios.get("https://api-mumbai.polygonscan.com/api", {
     params: {
       module: "contract",
       action: "getabi",
@@ -150,6 +150,7 @@ async function sendWeb3InboxNotifications(logs) {
   }
 
 }
+
 webSocketClient.watchContractEvent({
   address: PPP_CONTRACT_ADDRESS,
   abi: PPP_CONTRACT_ABI,
