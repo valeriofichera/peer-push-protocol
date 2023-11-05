@@ -14,11 +14,7 @@ To demonstrate SwapGuard's functionality, we have built the:
 ### First Price-Protected DEX on the Flare Network
 **iiüi**
 
-## Eliminating Price Manipulations
-- **Slippage** -> _swap-guarded_
-- **Front Running** -> _swap-guarded_
-- **Low Liquidity** -> _swap-guarded_
-- **Oracle Manipulation** -> _swap-guarded_
+## Democaratizing the Data Market
 
 ## How it Works
 ![Diagram](/frontend/public/peanut_readme.svg)
@@ -27,7 +23,7 @@ To demonstrate SwapGuard's functionality, we have built the:
 
 
 ## Credits to web3Inbox by WalletConnect
-trzh3th
+mobile notifications from onchain events are a great use case
 
 
 
