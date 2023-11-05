@@ -7,6 +7,7 @@ import {
 } from '@web3inbox/widget-react'
 import { useCallback, useEffect } from 'react'
 import { useSignMessage, useAccount } from 'wagmi'
+import { Test_Icon } from './icons/Test_Icon'
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID || ''
 
@@ -65,28 +66,25 @@ export default function App() {
                         <div>Connect your wallet</div>
                     ) : (
                         <>
-                            <div>Address: {address}</div>
-                            <div>Account ID: {account}</div>
+                            
                             {!isRegistered ? (
-                                <div>
-                                    To manage notifications, sign and register an identity key:&nbsp;
+                           
+                                
                                     <button onClick={performRegistration} disabled={isRegistering}>
                                         {isRegistering ? 'Signing...' : 'Sign'}
                                     </button>
-                                </div>
+                                
                             ) : (
                                 <>
                                     {!isSubscribed ? (
                                         <>
                                             <button onClick={performSubscribe} disabled={isSubscribing}>
-                                                {isSubscribing ? 'Subscribing...' : 'Subscribe to notifications'}
+                                                {isSubscribing ? 'Subscribing...' : <Test_Icon />}
                                             </button>
                                         </>
                                     ) : (
                                         <>
-                                            <div>You are subscribed</div>
-                                            <div>Subscription: {JSON.stringify(subscription)}</div>
-                                            <div>Messages: {JSON.stringify(messages)}</div>
+                                            
                                         </>
                                     )}
                                 </>
