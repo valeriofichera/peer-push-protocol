@@ -1,4 +1,5 @@
 import CreateFeed from '@/components/CreateFeed'
+import { SendNotificationButton } from '@/components/SendNotificationButton'
 import Web3InboxSubscribe from '@/components/Web3InboxSubscribe_style'
 
 
@@ -9,6 +10,9 @@ export default function Dashboard() {
 <div className='col-span-6'>
 
         <CreateFeed />
+        <SendNotificationButton />
+
+        <Web3InboxSubscribe />
 </div>
 </div>
   )
