@@ -25,12 +25,12 @@ if (!RPC_PROVIDER_API_KEY || !POLYGONSCAN_API_KEY || !NOTIFY_API_SECRET || !PROJ
 
 const webSocketClient = createPublicClient({
   chain: polygonZkEvmTestnet,
-  transport: webSocket(`wss://polygon-zkevm-testnet.public.blastapi.io`)
+  transport: webSocket(`wss://polygon-zkevm-testnet.blastapi.io/${RPC_PROVIDER_API_KEY}`)
 });
 
 const publicClient = createPublicClient({
   chain: polygonZkEvmTestnet,
-  transport: http(`https://polygon-zkevm-testnet.public.blastapi.io`)
+  transport: http(`https://polygon-zkevm-testnet.blastapi.io/${RPC_PROVIDER_API_KEY}`)
 });
 
 const account = privateKeyToAccount(`0x${process.env.PRIVATE_KEY}`);
@@ -38,13 +38,13 @@ const account = privateKeyToAccount(`0x${process.env.PRIVATE_KEY}`);
 const client = createWalletClient({
   account,
   chain: polygonZkEvmTestnet,
-  transport: http("https://polygon-zkevm-testnet.public.blastapi.io")
+  transport: http(`https://polygon-zkevm-testnet.blastapi.io/${RPC_PROVIDER_API_KEY}`)
 })
 
 
 // fetch the contract's ABI from the explorer
 async function getContractAbi(_contractAddress: string) {
-  const explorerResponse = await axios.get("https://testnet-zkevm.polygonscan.com/api", {
+  const explorerResponse = await axios.get("https://api-testnet-zkevm.polygonscan.com/api", {
     params: {
       module: "contract",
       action: "getabi",
