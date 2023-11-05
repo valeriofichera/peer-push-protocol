@@ -12,16 +12,16 @@ const FullFill = () => {
     args: [0] //user input, which Request to fulfill
   })
 
-return (
-<div className=" text-lg p-5 flex flex-col font-nebula text-center w-96">
-<div>Fulfill a Requested Push</div>
-  <Button onClick={() => write()}>FullFill</Button>
-  {isLoading && <div>Check Wallet</div>}
-  {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
-</div>
+  return (
+    <div className="flex justify-center mx-auto text-lg p-5 flex flex-col font-nebula text-center w-96">
+      <div>Fulfill a Requested Push</div>
+      <Button onClick={() => write()}>FullFill</Button>
+      {isLoading && <div>Check Wallet</div>}
+      {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
+    </div>
 
 
-);
+  );
 
 };
 

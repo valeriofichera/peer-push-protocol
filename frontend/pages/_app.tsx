@@ -2,8 +2,33 @@ import '@/styles/globals.css';
 import type { AppProps } from "next/app";
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
 import Header from '@/components/Header';
-import { WagmiConfig } from 'wagmi'
-import { polygonZkEvmTestnet } from 'wagmi/chains'
+import { Chain, WagmiConfig } from 'wagmi'
+import { polygonMumbai, polygonZkEvm } from 'viem/chains';
+
+export const coreChainTestnet: Chain = {
+  id: 1115,
+  name: "Core Chain TestNet",
+  network: "core chain testnet",
+  nativeCurrency: {
+    name: "Test CORE",
+    symbol: "tCORE",
+    decimals: 18,
+  },
+  rpcUrls: {
+    public: { http: ["https://rpc.test.btcs.network/"] },
+    default: { http: ["https://rpc.test.btcs.network/"] },
+  },
+  blockExplorers: {
+    etherscan: {
+      name: "Core Scan",
+      url: "https://scan.test.btcs.network/",
+    },
+    default: {
+      name: "Core Scan",
+      url: "https://scan.test.btcs.network/",
+    },
+  },
+};
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
 
@@ -18,7 +43,7 @@ const metadata = {
   icons: ['/ppp.png']
 }
 
-const chains = [polygonZkEvmTestnet]
+const chains = [coreChainTestnet, polygonMumbai, polygonZkEvm]
 
 const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
 
@@ -28,8 +53,8 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
       <div className='px-5'>
-      <Header />
-      <Component {...pageProps} />
+        <Header />
+        <Component {...pageProps} />
       </div>
     </WagmiConfig>
   )
