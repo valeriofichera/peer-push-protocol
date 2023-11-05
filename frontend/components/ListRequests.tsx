@@ -1,11 +1,11 @@
-import { JSXElementConstructor, Key, PromiseLikeOfReactNode, ReactElement, ReactNode, ReactPortal, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PPP_CONTRACT_ABI, PPP_CONTRACT_ADDRESS } from '@/lib/constants';
 import { useContractRead } from 'wagmi';
 import Image from 'next/image';
 
 const ListRequests = () => {
   // Initialize the requests state with a value that reflects the initial content on the server-side
-  const [requests, setRequests] = useState(undefined);
+  const [requests, setRequests] = useState<any>(undefined);
   const [loaded, setLoaded] = useState(false); // State to keep track of loading completion
 
   const { data, isError, isLoading } = useContractRead({
@@ -18,7 +18,7 @@ const ListRequests = () => {
   useEffect(() => {
     if (!isLoading && !isError && data) {
       // Once data is loaded and there is no error, update the state.
-      setRequests(data);
+      setRequests(data as any);
       setLoaded(true); // Mark as loaded
     } else if (isError) {
       setRequests(null); // Handle error state
@@ -37,32 +37,30 @@ const ListRequests = () => {
       </h2>
 
 
-
-
       {isError || requests === null ? (
-          <p>Error fetching requests.</p>
-        ) : (
-          <>
-          {requests && requests.map((item: any , index: any | null | undefined) => (
+        <p>Error fetching requests.</p>
+      ) : (
+        <>
+          {requests && requests.map((item: any, index: any | null | undefined) => (
 
-    <div key={index} className="bg-gradient-to-r bg-gray-300 rounded-lg  p-5 flex items-center">
-      <div className="flex flex-row justify-center items-center">
-        <div className="flex flex-col gap-5">
-          <p className="text-sm font-bold">Request ID {index + 1}</p>
-          <Image src="/Peanut_Logo.svg" alt="Peanut" width={100} height={100} />
-        </div>
-        <div className="flex flex-col">
-          <h2 className="text-xl font-bold text-black font-nebula">
-            Peanut Protocol
-          </h2>
-            <p className="text-xs">{item.contractAddress} </p>
-            <p className="text-lg">{item.functionName}</p>
-        </div>
-      </div>
-    </div>
+            <div key={index} className="bg-gradient-to-r bg-gray-300 rounded-lg  p-5 flex items-center">
+              <div className="flex flex-row justify-center items-center">
+                <div className="flex flex-col gap-5">
+                  <p className="text-sm font-bold">Request ID {index + 1}</p>
+                  <Image src="/Peanut_Logo.svg" alt="Peanut" width={100} height={100} />
+                </div>
+                <div className="flex flex-col">
+                  <h2 className="text-xl font-bold text-black font-nebula">
+                    Peanut Protocol
+                  </h2>
+                  <p className="text-xs">{item.contractAddress} </p>
+                  <p className="text-lg">{item.functionName}</p>
+                </div>
+              </div>
+            </div>
           ))}
-          </>
-        )}  
+        </>
+      )}
 
     </div>
   );
