@@ -8,7 +8,7 @@ import Link from "next/link";
 
 function Header() {
   return (
-    <div className="min-w-screen flex items-center mt-5 font-nebula font-bold">
+    <div className="min-w-screen flex items-center mt-5 font-nebula font-bold p-5">
 
       <Link href="/" className="flex items-center justify-start flex-grow">
         <PPP className="h-[100px]" />
