@@ -1,5 +1,5 @@
-// zkEvm-testnet
-export const PPP_CONTRACT_ADDRESS = '0xC2385F61593b0EE50C561aA38ecCcd09b727dF07';
+
+export const PPP_CONTRACT_ADDRESS = '0xfC5711Eaf0Cd7aFe63FC4Db7Da0d6bea80e315dE';
 
 export const PPP_CONTRACT_ABI = [
     {
