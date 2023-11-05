@@ -219,10 +219,16 @@ contract PeerPushProtocol is ERC20 {
             "Insufficient balance to reward"
         );
 
-        // call the function to get the initial state
+        // call the function to get the updated state
         bytes memory returnData = readContract(
             pushRequest.contractAddress,
             pushRequest.functionName
+        );
+
+        // check that the state has actually updated
+        require(
+            keccak256(returnData) != keccak256(pushRequest.currentState),
+            "state has not changed"
         );
 
         // update the pushRequest

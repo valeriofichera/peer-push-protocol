@@ -71,7 +71,7 @@ type PushRequest = {
 };
 
 // attempt to update all pushRequests following the getDepositCount function on the Peanut contract
-async function sendWeb3InboxNotifications() {
+async function fulfilPeanutPushRequests() {
   const data = await publicClient.readContract({
     address: PPP_CONTRACT_ADDRESS,
     abi: PPP_CONTRACT_ABI,
@@ -81,15 +81,15 @@ async function sendWeb3InboxNotifications() {
   // filter for push requests for requests tracking the Peanut contract address and function name
   const filteredPushRequests = data.filter((pushRequest) =>
     pushRequest.contractAddress === contractAddress
-    && pushRequest.functionName === 'getDepositCount')
+    && pushRequest.functionName === 'getDepositCount'
+    && pushRequest.active);
 
   // get the push request ids
   const pushRequestIds = filteredPushRequests.map((pushRequest) => pushRequest.id);
 
-  console.log(`Found ${pushRequestIds.length} push requests to fulfil`);
+  console.log(`Found ${pushRequestIds.length} eligible pushRequests.`);
 
   // loop through the push request ids and push the data to the PPP contract
-
   for (const pushRequestId of pushRequestIds) {
     const request = {
       chain: polygonMumbai,
@@ -111,24 +111,24 @@ async function sendWeb3InboxNotifications() {
     } catch (error) {
       console.log(`Error fulfilling pushRequest ${pushRequestId}: ${error.shortMessage || error}`);
     }
-
   }
 
   console.log("Finished fulfilling push requests");
 
 }
-sendWeb3InboxNotifications();
+
+await fulfilPeanutPushRequests();
 
 webSocketClient.watchContractEvent({
-  address: PPP_CONTRACT_ADDRESS,
-  abi: PPP_CONTRACT_ABI,
-  eventName: "PushRequestFulfilled",
+  address: contractAddress,
+  abi: contractAbi,
+  eventName: "DepositEvent",
   onError: (error) => {
     throw error;
   },
   onLogs: (logs) => {
-    console.log("PushRequestFulfilled", logs);
-    sendWeb3InboxNotifications();
+    console.log("new deposit event, running fulfilPeanutPushRequests()");
+    fulfilPeanutPushRequests();
   },
 });
 
