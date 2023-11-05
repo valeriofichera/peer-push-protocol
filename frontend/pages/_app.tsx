@@ -27,8 +27,10 @@ createWeb3Modal({ wagmiConfig, projectId, chains })
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig config={wagmiConfig}>
+      <div className='px-5'>
       <Header />
       <Component {...pageProps} />
+      </div>
     </WagmiConfig>
   )
 }

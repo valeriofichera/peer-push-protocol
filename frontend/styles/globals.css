@@ -1,8 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
+
+  @font-face {
+    font-family: 'nebula';
+    src: url('/fonts/Nebula-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
