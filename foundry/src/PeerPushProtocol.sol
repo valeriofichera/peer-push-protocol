@@ -22,7 +22,7 @@ contract PeerPushProtocol is ERC20 {
 
     struct PushRequest {
         uint256 id;
-        address sender;
+        address creator;
         address contractAddress;
         string functionName;
         bytes currentState;
@@ -32,7 +32,7 @@ contract PeerPushProtocol is ERC20 {
         bool active;
     }
 
-    PushRequest[] public requests;
+    PushRequest[] public pushRequests;
 
     /* claim tokens if you have not already */
     function claimTokens() public {
@@ -54,7 +54,7 @@ contract PeerPushProtocol is ERC20 {
     /* deposit PPP tokens into the contract
      * @param amount the amount of PPP tokens to deposit
      */
-    function deposit(uint256 amount) public {
+    function depositTokens(uint256 amount) public {
         // Check the balance
         require(
             balanceOf(msg.sender) >= amount,
@@ -74,7 +74,7 @@ contract PeerPushProtocol is ERC20 {
     /* withdraw PPP tokens from the contract
      * @param amount the amount of PPP tokens to withdraw
      */
-    function withdraw(uint256 amount) public {
+    function withdrawTokens(uint256 amount) public {
         require(
             addressToDepositedTokens[msg.sender] >= amount,
             "Insufficient balance"
@@ -88,7 +88,7 @@ contract PeerPushProtocol is ERC20 {
     /* create a new PushRequest
      * @param _contractAddress the address of the contract to call
      * @param _functionName the name of the function to call i.e "getPrice"
-     * @param _pushReward the amount of PPP to send to the sender when the pushRequest is updateed
+     * @param _pushReward the amount of PPP to send to the fulfiller when the pushRequest is updateed
      * @param _updateInterval the amount of time in seconds between updatees
      */
     function createPushRequest(
@@ -97,12 +97,18 @@ contract PeerPushProtocol is ERC20 {
         uint256 _pushReward,
         uint256 _updateInterval
     ) public {
+        // Check if the PushRequest creator has enough deposited tokens for the reward
+        require(
+            addressToDepositedTokens[msg.sender] >= _pushReward,
+            "Insufficient depositedToken balance to reward"
+        );
+
         // call the function to get the initial state
         bytes memory returnData = readContract(_contractAddress, _functionName);
 
         PushRequest memory pushRequest = PushRequest({
-            id: requests.length,
-            sender: msg.sender,
+            id: pushRequests.length,
+            creator: msg.sender,
             contractAddress: _contractAddress,
             functionName: _functionName,
             currentState: returnData,
@@ -112,50 +118,50 @@ contract PeerPushProtocol is ERC20 {
             active: true
         });
 
-        // add the pushRequest to the list of requests
-        requests.push(pushRequest);
+        // add the pushRequest to the list of pushRequests
+        pushRequests.push(pushRequest);
 
-        // add the pushRequest to the list of requests for the sender
+        // add the pushRequest to the list of pushRequests for the sender
         addressToPushRequestIds[msg.sender].push(pushRequest.id);
     }
 
     /* disable a pushRequest
-     * @param _requestId the id of the pushRequest to cancel
+     * @param _pushRequestId the id of the pushRequest to cancel
      */
-    function disablePushRequest(uint256 _requestId) public {
-        PushRequest storage pushRequest = requests[_requestId];
+    function disablePushRequest(uint256 _pushRequestId) public {
+        PushRequest storage pushRequest = pushRequests[_pushRequestId];
 
         // check that the pushRequest is active
         require(pushRequest.active, "pushRequest is inactive");
 
-        // check that the sender is the owner of the pushRequest
-        require(pushRequest.sender == msg.sender, "sender is not the owner");
+        // check that msg.sender is the owner of the pushRequest
+        require(pushRequest.creator == msg.sender, "You are not the owner");
 
         // disable the pushRequest
         pushRequest.active = false;
     }
 
     /* enable a pushRequest
-     * @param _requestId the id of the pushRequest to enable
+     * @param _pushRequestId the id of the pushRequest to enable
      */
-    function enablePushRequest(uint256 _requestId) public {
-        PushRequest storage pushRequest = requests[_requestId];
+    function enablePushRequest(uint256 _pushRequestId) public {
+        PushRequest storage pushRequest = pushRequests[_pushRequestId];
 
         // check that the pushRequest is inactive
         require(!pushRequest.active, "pushRequest is active");
 
         // check that the sender is the owner of the pushRequest
-        require(pushRequest.sender == msg.sender, "sender is not the owner");
+        require(pushRequest.creator == msg.sender, "sender is not the owner");
 
         // enable the pushRequest
         pushRequest.active = true;
     }
 
     /* update the state of a pushRequest
-     * @param _requestId the id of the pushRequest to update
+     * @param _pushRequestId the id of the pushRequest to update
      */
-    function fulfilPushRequest(uint256 _requestId) public {
-        PushRequest storage pushRequest = requests[_requestId];
+    function fulfilPushRequest(uint256 _pushRequestId) public {
+        PushRequest storage pushRequest = pushRequests[_pushRequestId];
 
         // check that the PushRequest is active
         require(pushRequest.active, "PushRequest is inactive");
@@ -167,9 +173,9 @@ contract PeerPushProtocol is ERC20 {
             "update interval has not passed"
         );
 
-        // Check if the PushRequest sender has enough deposited tokens for the reward
+        // Check if the PushRequest creator has enough deposited tokens for the reward
         require(
-            addressToDepositedTokens[pushRequest.sender] >=
+            addressToDepositedTokens[pushRequest.creator] >=
                 pushRequest.pushReward,
             "Insufficient balance to reward"
         );
@@ -184,28 +190,28 @@ contract PeerPushProtocol is ERC20 {
         pushRequest.currentState = returnData;
         pushRequest.lastUpdate = block.timestamp;
 
-        // Deduct the reward from the sender's deposited balance
-        addressToDepositedTokens[pushRequest.sender] -= pushRequest.pushReward;
+        // Deduct the reward from the pushRequest creator's deposited balance
+        addressToDepositedTokens[pushRequest.creator] -= pushRequest.pushReward;
 
-        // Transfer the reward to the caller of the updateRequest function
-        _transfer(address(this), msg.sender, pushRequest.pushReward);
+        // add the reward to msg.sender's deposited balance
+        addressToDepositedTokens[msg.sender] += pushRequest.pushReward;
     }
 
     /* get the current state of a pushRequest
-     * @param _requestId the id of the pushRequest to get the state of
+     * @param _pushRequestId the id of the pushRequest to get the state of
      */
     function getPushRequestState(
-        uint256 _requestId
+        uint256 _pushRequestId
     ) public view returns (bytes memory) {
-        PushRequest storage pushRequest = requests[_requestId];
+        PushRequest storage pushRequest = pushRequests[_pushRequestId];
 
         return pushRequest.currentState;
     }
 
-    /* get all requests
+    /* get all pushRequests
      */
     function getPushRequests() public view returns (PushRequest[] memory) {
-        return requests;
+        return pushRequests;
     }
 
     /* read the current state of a function on another contract
