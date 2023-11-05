@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react'
 import Header from '@/components/Header';
 import { WagmiConfig } from 'wagmi'
-import { polygonMumbai } from 'wagmi/chains'
+import { polygonZkEvmTestnet } from 'wagmi/chains'
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
 
@@ -18,7 +18,7 @@ const metadata = {
   icons: ['/ppp.png']
 }
 
-const chains = [polygonMumbai]
+const chains = [polygonZkEvmTestnet]
 
 const wagmiConfig = defaultWagmiConfig({ chains, projectId, metadata })
 
